@@ -1,0 +1,32 @@
+name: Document Service
+
+on:
+  push:
+    paths:
+      - document-service/**
+    branches:
+      - 'main'
+#  pull_request:
+#    branches: [main]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./document-service
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build with Maven
+        run: ./mvnw -ntp verify
